@@ -7,23 +7,23 @@
 using namespace  sf;
 using namespace  std;
 
-//Цвета для рисования линий интерфейса
+//Р¦РІРµС‚Р° РґР»СЏ СЂРёСЃРѕРІР°РЅРёСЏ Р»РёРЅРёР№ РёРЅС‚РµСЂС„РµР№СЃР°
 const Color RED = Color(198, 36, 36);
 const Color BLACK = Color(15, 14, 14);
-//Цвета для рисования ящиков
+//Р¦РІРµС‚Р° РґР»СЏ СЂРёСЃРѕРІР°РЅРёСЏ СЏС‰РёРєРѕРІ
 const Color YELLOW = Color(246, 181, 59);
 const Color GREEN = Color(41, 157, 57);
 const Color ORANGE = Color(196, 100, 23);
 const Color REDD = Color(232, 88, 63);
 
-//Точка отсчета для игрового поля
+//РўРѕС‡РєР° РѕС‚СЃС‡РµС‚Р° РґР»СЏ РёРіСЂРѕРІРѕРіРѕ РїРѕР»СЏ
 const int x = 60, y = 100;
 
-//Рекорды по очкам загруженные из файла сохранения (инициализация массивов)
+//Р РµРєРѕСЂРґС‹ РїРѕ РѕС‡РєР°Рј Р·Р°РіСЂСѓР¶РµРЅРЅС‹Рµ РёР· С„Р°Р№Р»Р° СЃРѕС…СЂР°РЅРµРЅРёСЏ (РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РјР°СЃСЃРёРІРѕРІ)
 string records[10] = { "", "", "", "", "", "", "", "", "", "" };
 int scoreRecords[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-//Функция сохранения нового рекорда
+//Р¤СѓРЅРєС†РёСЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ РЅРѕРІРѕРіРѕ СЂРµРєРѕСЂРґР°
 void saveScore(int score)
 {
 	int scoreBuff[11];
@@ -38,14 +38,14 @@ void saveScore(int score)
 		cout << scoreBuff[i] << " ";
 	}
 
-	//Сортировка массива
+	//РЎРѕСЂС‚РёСЂРѕРІРєР° РјР°СЃСЃРёРІР°
 	for (int i = 1; i < 11; ++i)
 	{
 		for (int r = 0; r < 11 - i; r++)
 		{
 			if (scoreBuff[r] < scoreBuff[r + 1])
 			{
-				//Обмен местами
+				//РћР±РјРµРЅ РјРµСЃС‚Р°РјРё
 				int temp = scoreBuff[r];
 				scoreBuff[r] = scoreBuff[r + 1];
 				scoreBuff[r + 1] = temp;
@@ -81,34 +81,34 @@ public:
 		settings.antialiasingLevel = 8;
 		Print::setFont("Data/font.otf");
 		game.create(VideoMode(600, 800), "Arcanoid", Style::Titlebar, settings);
-		game.setFramerateLimit(120); //Лимит частоты кадров
+		game.setFramerateLimit(120); //Р›РёРјРёС‚ С‡Р°СЃС‚РѕС‚С‹ РєР°РґСЂРѕРІ
 
-		/*-----------------Работа с курсором----------------*/
+		/*-----------------Р Р°Р±РѕС‚Р° СЃ РєСѓСЂСЃРѕСЂРѕРј----------------*/
 		game.setMouseCursorVisible(false);
 		View fixed = game.getView();
 
 
 		Texture moveTexture, selectTexture;
-		moveTexture.loadFromFile("Data/Move.png"); //Курсор при движение
-		selectTexture.loadFromFile("Data/Select.png"); //Курсор когда появляется возможность выбрать
+		moveTexture.loadFromFile("Data/Move.png"); //РљСѓСЂСЃРѕСЂ РїСЂРё РґРІРёР¶РµРЅРёРµ
+		selectTexture.loadFromFile("Data/Select.png"); //РљСѓСЂСЃРѕСЂ РєРѕРіРґР° РїРѕСЏРІР»СЏРµС‚СЃСЏ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РІС‹Р±СЂР°С‚СЊ
 		Sprite cursor(moveTexture);
 
-		/*-----------------Отрисовка интерфейса----------------*/
+		/*-----------------РћС‚СЂРёСЃРѕРІРєР° РёРЅС‚РµСЂС„РµР№СЃР°----------------*/
 		RectangleShape borderGame = Border::printBorder(480, 600, 60, 100);
 
-		RectangleShape borderPlay = Border::printBorder(118, 60, 60, 720); //Кнопка Play
-		RectangleShape borderAgain = Border::printBorder(110, 60, 200, 720); //Кнопка Заново
-		RectangleShape borderButton = Border::printBorder(210, 60, 330, 720); //Кнопка Меню
+		RectangleShape borderPlay = Border::printBorder(118, 60, 60, 720); //РљРЅРѕРїРєР° Play
+		RectangleShape borderAgain = Border::printBorder(110, 60, 200, 720); //РљРЅРѕРїРєР° Р—Р°РЅРѕРІРѕ
+		RectangleShape borderButton = Border::printBorder(210, 60, 330, 720); //РљРЅРѕРїРєР° РњРµРЅСЋ
 
 		Object playBtn(40, 40, 92, 725);
 		Object againBtn(45, 45, 225, 725);
 		Object menuBtn(135, 30, 370, 735);
 
-		/*-------------------Элементы игры--------------------*/
-		//Платформа, шар и ящики
+		/*-------------------Р­Р»РµРјРµРЅС‚С‹ РёРіСЂС‹--------------------*/
+		//РџР»Р°С‚С„РѕСЂРјР°, С€Р°СЂ Рё СЏС‰РёРєРё
 		Object gameSpace(480, 600, 60, 100);
 
-		//Описание противников
+		//РћРїРёСЃР°РЅРёРµ РїСЂРѕС‚РёРІРЅРёРєРѕРІ
 		Color colors[4] = { REDD, ORANGE, GREEN, YELLOW };
 
 		RectangleShape **vragMass = new RectangleShape*[4];
@@ -138,7 +138,7 @@ public:
 		playerShape.setOutlineThickness(0);
 		Object player(100, 10, x + 190, y + 580);
 
-		//Описание игрового шара
+		//РћРїРёСЃР°РЅРёРµ РёРіСЂРѕРІРѕРіРѕ С€Р°СЂР°
 		CircleShape ballShape(10);
 
 		ballShape.setFillColor(Color(28, 45, 155));
@@ -148,10 +148,10 @@ public:
 		ballShape.setPosition(290, y + 410);
 		Object ball(20, 20, 290, y + 420);
 
-		//Индекс выделеной кнопки
+		//РРЅРґРµРєСЃ РІС‹РґРµР»РµРЅРѕР№ РєРЅРѕРїРєРё
 		int indexMenu = -1;
 
-		/*----------Работа с картинками для кнопок----------*/
+		/*----------Р Р°Р±РѕС‚Р° СЃ РєР°СЂС‚РёРЅРєР°РјРё РґР»СЏ РєРЅРѕРїРѕРє----------*/
 		Image image1, image2, image3;
 		Texture texture1, texture2, texture3;
 		Sprite spritePlay, spriteAgain;
@@ -168,7 +168,7 @@ public:
 		spritePlay.setTexture(texture2);
 		spriteAgain.setTexture(texture3);
 
-		/*-----------------Отрисовка жизней----------------*/
+		/*-----------------РћС‚СЂРёСЃРѕРІРєР° Р¶РёР·РЅРµР№----------------*/
 		CircleShape life[3];
 		life[0].setRadius(8);
 		life[0].setFillColor(RED);
@@ -188,24 +188,24 @@ public:
 		life[2].setOutlineColor(RED);
 		life[2].setPosition(500, 40);
 
-		//Флаг нажата ли пауза
+		//Р¤Р»Р°Рі РЅР°Р¶Р°С‚Р° Р»Рё РїР°СѓР·Р°
 		bool pause = false;
-		//Нажата ли кнопка продолжить
+		//РќР°Р¶Р°С‚Р° Р»Рё РєРЅРѕРїРєР° РїСЂРѕРґРѕР»Р¶РёС‚СЊ
 		bool contun = false;
-		//Нажата ли кнопка начать
+		//РќР°Р¶Р°С‚Р° Р»Рё РєРЅРѕРїРєР° РЅР°С‡Р°С‚СЊ
 		bool start = false;
 
-		//Закончились ли жизни 
+		//Р—Р°РєРѕРЅС‡РёР»РёСЃСЊ Р»Рё Р¶РёР·РЅРё 
 		bool gameOver = false;
 
 		Clock clock;
 
-		//Скорость перемещения по x и y
+		//РЎРєРѕСЂРѕСЃС‚СЊ РїРµСЂРµРјРµС‰РµРЅРёСЏ РїРѕ x Рё y
 		int speedGame = 4;
 		int dx = 0, dy = speedGame, nx = 1, ny = 1;
 		int score = 0, bonus = 0;
 
-		//Количество жизней
+		//РљРѕР»РёС‡РµСЃС‚РІРѕ Р¶РёР·РЅРµР№
 		int lifeCount = 3;
 		int countVrag = 20;
 
@@ -234,7 +234,7 @@ public:
 		{
 			Event event;
 
-			//Получаем 120 кадров в секунду
+			//РџРѕР»СѓС‡Р°РµРј 120 РєР°РґСЂРѕРІ РІ СЃРµРєСѓРЅРґСѓ
 			float time = clock.getElapsedTime().asMilliseconds();
 			if (time >= 4.2)
 			{
@@ -275,7 +275,7 @@ public:
 					//dy = ny * dy;
 				}
 
-				/*----------Обрабтка столкновений с границей игровой области----------*/
+				/*----------РћР±СЂР°Р±С‚РєР° СЃС‚РѕР»РєРЅРѕРІРµРЅРёР№ СЃ РіСЂР°РЅРёС†РµР№ РёРіСЂРѕРІРѕР№ РѕР±Р»Р°СЃС‚Рё----------*/
 				if (ballShape.getPosition().y <= 100)
 				{
 					ny = -ny;
@@ -294,12 +294,12 @@ public:
 					dx = nx * dx;
 				}
 
-				/*------------------Обработка столкновений с ракеткой------------------*/
-				//Мячик попал на ракетку
+				/*------------------РћР±СЂР°Р±РѕС‚РєР° СЃС‚РѕР»РєРЅРѕРІРµРЅРёР№ СЃ СЂР°РєРµС‚РєРѕР№------------------*/
+				//РњСЏС‡РёРє РїРѕРїР°Р» РЅР° СЂР°РєРµС‚РєСѓ
 				if ((ball.x3 + 10 >= player.x1) && (ball.x3 + 10 <= player.x2) && (ball.y3 >= player.y1))
 				{
 					bonus = 1;
-					//Мячик попал на левым край ракетки
+					//РњСЏС‡РёРє РїРѕРїР°Р» РЅР° Р»РµРІС‹Рј РєСЂР°Р№ СЂР°РєРµС‚РєРё
 					if ((ball.x3 + 10 >= player.x1) && (ball.x3 + 10 <= player.x1 + 10))
 					{
 						ny = -ny;
@@ -308,7 +308,7 @@ public:
 						dx = -1 * fabs(dy);
 						dx = nx * dx;
 					}
-					//Мячик попал на правый край ракетки
+					//РњСЏС‡РёРє РїРѕРїР°Р» РЅР° РїСЂР°РІС‹Р№ РєСЂР°Р№ СЂР°РєРµС‚РєРё
 					if ((ball.x3 + 10 >= player.x2 - 10) && (ball.x2 + 10 >= player.x2))
 					{
 						ny = -ny;
@@ -318,7 +318,7 @@ public:
 						dx = nx * dx;
 					}
 
-					//Мячик попал на основную часть ракетки
+					//РњСЏС‡РёРє РїРѕРїР°Р» РЅР° РѕСЃРЅРѕРІРЅСѓСЋ С‡Р°СЃС‚СЊ СЂР°РєРµС‚РєРё
 					if (((ball.x3 + 10 >= player.x1 + 11) && (ball.x3 + 10 <= player.x1 + 41)) ||
 						((ball.x3 + 10 >= player.x1 + 51) && (ball.x3 + 10 <= player.x1 + 81)))
 					{
@@ -329,7 +329,7 @@ public:
 						dx = nx * dx;
 					}
 
-					//Мячик попал в середину ракетки
+					//РњСЏС‡РёРє РїРѕРїР°Р» РІ СЃРµСЂРµРґРёРЅСѓ СЂР°РєРµС‚РєРё
 					if (((ball.x3 + 10 >= player.x1 + 42) && (ball.x3 + 10 <= player.x1 + 62)))
 					{
 						ny = -ny;
@@ -340,14 +340,14 @@ public:
 
 				if (start)
 				{
-					//Перемещаем шарик
+					//РџРµСЂРµРјРµС‰Р°РµРј С€Р°СЂРёРє
 					if (!pause) { ballShape.move(dx, dy); }
 					ball.update(ballShape.getPosition());
 					if (dx == 0) { dx = fabs(dx); }
 				}
 			}
 
-			//Нажата A или Left
+			//РќР°Р¶Р°С‚Р° A РёР»Рё Left
 			if ((Keyboard::isKeyPressed(Keyboard::A)) || ((Keyboard::isKeyPressed(Keyboard::Left))))
 			{
 				if (player.x3 - 7 > gameSpace.x3)
@@ -356,7 +356,7 @@ public:
 					player.update(playerShape.getPosition());
 				}
 			}
-			//Нажата D или Right
+			//РќР°Р¶Р°С‚Р° D РёР»Рё Right
 			if ((Keyboard::isKeyPressed(Keyboard::D)) || ((Keyboard::isKeyPressed(Keyboard::Right))))
 			{
 				if (player.x2 + 7 < gameSpace.x4)
@@ -372,13 +372,13 @@ public:
 				{
 				case Event::KeyPressed:
 
-					//Нажата Enter
+					//РќР°Р¶Р°С‚Р° Enter
 					if (Keyboard::isKeyPressed(Keyboard::Return))
 					{
 						menu.setVisible(true);
 						game.close();
 					}
-					//Нажата Space
+					//РќР°Р¶Р°С‚Р° Space
 					if (Keyboard::isKeyPressed(Keyboard::Space))
 					{
 						if (start == false)
@@ -429,9 +429,9 @@ public:
 						}
 						if (againBtn.catchButton(Mouse::getPosition(game).x, Mouse::getPosition(game).y))
 						{
-							Border::restart = true; //Поднимаем флаг нажатия кнопки рестарт
+							Border::restart = true; //РџРѕРґРЅРёРјР°РµРј С„Р»Р°Рі РЅР°Р¶Р°С‚РёСЏ РєРЅРѕРїРєРё СЂРµСЃС‚Р°СЂС‚
 							//menu.setVisible(true);
-							game.close(); //Закрываем окно с игрой дял перезапуска
+							game.close(); //Р—Р°РєСЂС‹РІР°РµРј РѕРєРЅРѕ СЃ РёРіСЂРѕР№ РґСЏР» РїРµСЂРµР·Р°РїСѓСЃРєР°
 
 						}
 						if (menuBtn.catchButton(Mouse::getPosition(game).x, Mouse::getPosition(game).y))
@@ -444,11 +444,11 @@ public:
 				}
 			}
 
-			cursor.setPosition(static_cast<Vector2f>(Mouse::getPosition(menu))); // Установка позиции курсора
-			//Устанавливаем текстуру двигаюшего курсора
+			cursor.setPosition(static_cast<Vector2f>(Mouse::getPosition(menu))); // РЈСЃС‚Р°РЅРѕРІРєР° РїРѕР·РёС†РёРё РєСѓСЂСЃРѕСЂР°
+			//РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С‚РµРєСЃС‚СѓСЂСѓ РґРІРёРіР°СЋС€РµРіРѕ РєСѓСЂСЃРѕСЂР°
 			cursor.setTexture(moveTexture);
 
-			//Обводка выбранного пункта меню
+			//РћР±РІРѕРґРєР° РІС‹Р±СЂР°РЅРЅРѕРіРѕ РїСѓРЅРєС‚Р° РјРµРЅСЋ
 			if (playBtn.catchButton(Mouse::getPosition(game).x, Mouse::getPosition(game).y))
 			{
 				cursor.setTexture(selectTexture);
@@ -475,7 +475,7 @@ public:
 				borderButton.setOutlineColor(BLACK);
 				break;
 			case 0:
-				//Устанавливаем цвет внешнего контура прямоугольника на красный
+				//РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С†РІРµС‚ РІРЅРµС€РЅРµРіРѕ РєРѕРЅС‚СѓСЂР° РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР° РЅР° РєСЂР°СЃРЅС‹Р№
 				borderPlay.setOutlineColor(RED);
 				break;
 			case 1:
@@ -488,17 +488,17 @@ public:
 
 			game.clear(Color(15, 14, 14));
 
-			game.draw(Print::printText(L"Очки: " + to_wstring(score), 50, 75, 15));
-			//game.draw(Print::printText(to_wstring(i), 50, 75, 15)); to_wstring(i) число в wstring 
-			//Отрисовка жизни
+			game.draw(Print::printText(L"РћС‡РєРё: " + to_wstring(score), 50, 75, 15));
+			//game.draw(Print::printText(to_wstring(i), 50, 75, 15)); to_wstring(i) С‡РёСЃР»Рѕ РІ wstring 
+			//РћС‚СЂРёСЃРѕРІРєР° Р¶РёР·РЅРё
 			game.draw(life[0]);
 			game.draw(life[1]);
 			game.draw(life[2]);
 
 			game.draw(borderButton);
-			game.draw(Print::printText(L"Меню", 45, 370, 720));
+			game.draw(Print::printText(L"РњРµРЅСЋ", 45, 370, 720));
 
-			//Рисуем рамки
+			//Р РёСЃСѓРµРј СЂР°РјРєРё
 			game.draw(borderGame);
 
 			game.draw(borderPlay);
@@ -507,19 +507,19 @@ public:
 			game.draw(borderAgain);
 			game.draw(spriteAgain);
 
-			//Отрисовка игрока и ящиков
+			//РћС‚СЂРёСЃРѕРІРєР° РёРіСЂРѕРєР° Рё СЏС‰РёРєРѕРІ
 			game.draw(playerShape);
 			game.draw(ballShape);
 
 			if (start == false)
 			{
-				game.draw(Print::printText(L"НАЧАТЬ ИГРУ", 50, 150, 350));
+				game.draw(Print::printText(L"РќРђР§РђРўР¬ РР“Р РЈ", 50, 150, 350));
 			}
 			else
 			{
 				if (countVrag == 0)
 				{
-					game.draw(Print::printText(L"ВЫ ВЫЙГРАЛИ", 45, 135, 350));
+					game.draw(Print::printText(L"Р’Р« Р’Р«Р™Р“Р РђР›Р", 45, 135, 350));
 					dx = 0;
 					dy = 0;
 					ballShape.setFillColor(BLACK);
@@ -529,29 +529,29 @@ public:
 				{
 					if (!gameOver)
 					{
-						//Отрисовка надписи о паузе
+						//РћС‚СЂРёСЃРѕРІРєР° РЅР°РґРїРёСЃРё Рѕ РїР°СѓР·Рµ
 						if (contun)
 						{
 							spritePlay.setTexture(texture2);
-							game.draw(Print::printText(L"ВОЗОБНОВИТЬ ИГРУ", 42, 100, 350));
+							game.draw(Print::printText(L"Р’РћР—РћР‘РќРћР’РРўР¬ РР“Р РЈ", 42, 100, 350));
 						}
 						else
 						{
 							if (pause) 
 							{ 
-								game.draw(Print::printText(L"ПАУЗА", 60, 215, 350)); 
+								game.draw(Print::printText(L"РџРђРЈР—Рђ", 60, 215, 350)); 
 								dx = 0;
 							}
 						}
 					}
 					else
 					{
-						game.draw(Print::printText(L"ИГРА ОКОНЧЕНА", 45, 135, 350));
+						game.draw(Print::printText(L"РР“Р Рђ РћРљРћРќР§Р•РќРђ", 45, 135, 350));
 					}
 				}
 			}
 
-			/*--------------------Обрабтка столкновений с врагами-----------------*/
+			/*--------------------РћР±СЂР°Р±С‚РєР° СЃС‚РѕР»РєРЅРѕРІРµРЅРёР№ СЃ РІСЂР°РіР°РјРё-----------------*/
 			for (int i = 0; i < 4; i++)
 			{
 				for (int j = 0; j < 5; j++)
@@ -560,7 +560,7 @@ public:
 					{
 						vragObject[i][j].live = false;
 						int k = 1;
-						//Подсчет очков
+						//РџРѕРґСЃС‡РµС‚ РѕС‡РєРѕРІ
 						if (bonus == 2) { k = 2; }
 						if (bonus == 4) { k = 4; bonus = 0; }
 
@@ -575,7 +575,7 @@ public:
 				}
 			}
 
-			//Отрисовка ящиков
+			//РћС‚СЂРёСЃРѕРІРєР° СЏС‰РёРєРѕРІ
 			for (int i = 0; i < 4; i++)
 			{
 				for (int j = 0; j < 5; j++)
@@ -584,7 +584,7 @@ public:
 				}
 			}
 
-			//Отрисовка курсора
+			//РћС‚СЂРёСЃРѕРІРєР° РєСѓСЂСЃРѕСЂР°
 			game.draw(cursor);
 
 			game.display();
