@@ -1,86 +1,149 @@
-class Object
+#include <SFML/Graphics.hpp>
+#include <string>
+#include <fstream>
+#include "Object.h"
+
+using namespace  sf;
+using namespace  std;
+
+class Record
 {
 public:
-
-	// ÓÌÒÚÛÚÓ ‰Îˇ ˝ÎÂÏÂÌÚÓ‚ ËÌÚÂÙÂÈÒ‡ Ë Ë„Ó‚˚ı ˝ÎÂÏÂÌÚÓ‚
-	Object(int sizeX, int sizeY, float x, float y) 
+	static void Render(RenderWindow &record, RenderWindow &menu)
 	{
-		this->sizeX = sizeX;
-		this->sizeY = sizeY;
-		this->x = x;
-		this->y = y;
+		Print::setFont("Data/font.otf"); 
+		record.create(VideoMode(600, 800), "Arcanoid", Style::Titlebar);
+		record.setMouseCursorVisible(false);
+		record.setFramerateLimit(60); //–õ–∏–º–∏—Ç —á–∞—Å—Ç–æ—Ç—ã –∫–∞–¥—Ä–æ–≤
 
-		this->x1 = x;
-		this->y1 = y;
+		RectangleShape borderText = Border::printBorder(480, 570, 60, 105);
+		RectangleShape borderButton;
 
-		this->x2 = x + sizeX;
-		this->y2 = y1;
+		/*-------------–†–∞–±–æ—Ç–∞ —Å –∫—É—Ä—Å–æ—Ä–æ–º-------------*/
+		record.setMouseCursorVisible(false);
+		View fixed = record.getView();
 
-		this->x3 = x;
-		this->y3 = y + sizeY;
+		//–ó–∞–≥—Ä—É–∑–∫–∞ –∑–Ω–∞—á–∫–∞ –∫—É—Ä—Å–æ—Ä–∞
+		Texture moveTexture, selectTexture;
+		moveTexture.loadFromFile("Data/Move.png"); //–ö—É—Ä—Å–æ—Ä –ø—Ä–∏ –¥–≤–∏–∂–µ–Ω–∏–µ
+		selectTexture.loadFromFile("Data/Select.png"); //–ö—É—Ä—Å–æ—Ä –∫–æ–≥–¥–∞ –ø–æ—è–≤–ª—è–µ—Ç—Å—è –≤–æ–∑–º–æ–∂–Ω–æ—Å—Ç—å –≤—ã–±—Ä–∞—Ç—å
+		Sprite cursor(moveTexture);
+		
+		ifstream file;
+		file.open("Data/record.txt");
 
-		this->x4 = x + sizeX;
-		this->y4 = y3;
-		live = true;
-	}
+		string records[10];
+		Object button1(150, 30, 225, 715);
+		int indexMenu = -1;
 
-	// ÓÌÒÚÛÚÓ ‰Îˇ ÒÓÁ‰‡ÌËÂ Ó·˙ÂÍÚÓ‚ ˇ˘ËÍ‡ (color Ò‚ÓÈÒÚ‚Ó ÔÓ ÍÓÚÓÓÏÛ ÓÔÂ‰ÂÎˇÂÚÒˇ Ì‡˜ËÒÎÂÌËÂ Ó˜ÍÓ‚)
-	Object(int sizeX, int sizeY, float x, float y, Color &color)
-	{
-		this->sizeX = sizeX;
-		this->sizeY = sizeY;
-		this->x = x;
-		this->y = y;
-
-		this->x1 = x;
-		this->y1 = y;
-
-		this->x2 = x + sizeX;
-		this->y2 = y1;
-
-		this->x3 = x;
-		this->y3 = y + sizeY;
-
-		this->x4 = x + sizeX;
-		this->y4 = y3;
-		live = true;
-		this->color = color;
-	}
-
-	//≈˘Â Ó‰ËÌ ÍÓÌÒÚÛÍÚÓ ‰Îˇ ËÌËˆË‡ÎËÁ‡ˆËË ÔÓÎˇ live, ÍÓÚÓ˚È ÌÛÊÂÌ ‰Îˇ ÓÔÂ‰ÂÎÂÌËˇ ˆÂÎ˚ı ˇ˘ËÍÓ‚
-	Object() { live = true; }
-
-	int sizeX, sizeY;
-	float x, y;
-	float x1, x2, x3, x4, y1, y2, y3, y4;
-	bool live;
-	Color color;
-
-	//œÂÂÒÂ˜ÂÌËÂ ÚÓ˜ÍË Ò Ó·˙ÂÍÚÓÏ (‰Îˇ ÍÌÓÔÓÍ)
-	bool catchButton(int x, int y)
-	{
-
-		if((x >= this->x1) && (x <= this->x2) && (y >= this->y1) && (y <= this->y3))
+		if (file.is_open())
 		{
-			return true;
+			int i = 0;
+
+			while (!file.eof())
+			{
+				getline(file, records[i]);
+				if (i <9) { i++; }
+				else { break; }
+			}
 		}
-		else { return false; }
+
+		file.close();
+
+		while (record.isOpen())
+		{
+			Event event;
+
+			while (record.pollEvent(event))
+			{
+				switch (event.type)
+				{
+				case Event::Closed:
+					menu.setVisible(true);
+					record.close();
+					break;
+				case Event::MouseButtonReleased:
+					if (event.mouseButton.button == sf::Mouse::Left)
+					{
+						if (button1.catchButton(Mouse::getPosition(record).x, Mouse::getPosition(record).y))
+						{
+							menu.setVisible(true);
+							record.close();
+						}
+					}
+					break;
+				case Event::KeyPressed:
+
+					//–ù–∞–∂–∞—Ç–∞ Enter
+					if (Keyboard::isKeyPressed(Keyboard::Return))
+					{
+						menu.setVisible(true);
+						record.close();
+					}
+					break;
+				}
+			}
+
+			cursor.setPosition(static_cast<Vector2f>(Mouse::getPosition(menu))); // –£—Å—Ç–∞–Ω–æ–≤–∫–∞ –ø–æ–∑–∏—Ü–∏–∏ –∫—É—Ä—Å–æ—Ä–∞
+				//–£—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ–º —Ü–≤–µ—Ç –≤–Ω–µ—à–Ω–µ–≥–æ –∫–æ–Ω—Ç—É—Ä–∞ –ø—Ä—è–º–æ—É–≥–æ–ª—å–Ω–∏–∫–∞ –Ω–∞ –∫—Ä–∞—Å–Ω—ã–π
+			borderButton.setOutlineColor(Color(198, 36, 36));
+
+			//–£—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ–º —Ç–µ–∫—Å—Ç—É—Ä—É –¥–≤–∏–≥–∞—é—à–µ–≥–æ –∫—É—Ä—Å–æ—Ä–∞
+			cursor.setTexture(moveTexture);
+
+			//–û–±–≤–æ–¥–∫–∞ –≤—ã–±—Ä–∞–Ω–Ω–æ–≥–æ –ø—É–Ω–∫—Ç–∞ –º–µ–Ω—é
+			if (button1.catchButton(Mouse::getPosition(menu).x, Mouse::getPosition(menu).y))
+			{
+				cursor.setTexture(selectTexture);
+				indexMenu = 0;
+			}
+			else
+			{
+				indexMenu = -1;
+			}
+
+
+			switch (indexMenu)
+			{
+			case -1:
+				borderButton.setOutlineColor(Color(15, 14, 14));
+				break;
+			case 0:
+				//–†–∞–∑–º–µ—Ä—ã (x,y), –∫–æ–æ—Ä–¥–∏–Ω–∞—Ç—ã (x,y)
+				borderButton = Border::printBorder(220, 60, 190, 700);
+				break;
+			}
+
+			record.clear(Color(15, 14, 14));
+
+			record.draw(Print::printText(L"–¢–∞–±–ª–∏—Ü–∞ —Ä–µ–∫–æ—Ä–¥–æ–≤:", 45, 70.0, 30));
+
+			//–†–∏—Å—É–µ–º —Ä–∞–º–∫–∏
+			record.draw(borderText);
+			record.draw(borderButton);
+
+
+			record.draw(Print::printText(L"–ù–∞–∑–∞–¥", 45, 225.0, 700));
+
+			float y = 120.0;
+
+			std::locale locale;
+			sf::String s;
+
+			Print::setFont("Data/rec_font.otf");
+
+			for (int i = 0; i < 10; i++)
+			{
+				s = String(records[i], locale);
+				if (s != "0"){ record.draw(Print::printText(s, 30, 90, y)); }
+				y += 55;
+			}
+
+			Print::setFont("Data/font.otf");
+			record.draw(cursor);
+
+			record.display();
+		}
 	}
 
-	//Œ·ÌÓ‚ÎÂÌËÂ ÍÓÓ‰ËÌ‡Ú 4-ı ÚÓ˜ÂÍ ÔˇÏÓÛ„ÓÎ¸ÌËÍ‡ ÔË Â„Ó ÔÂÂÏÂ˘ÂÌËË
-	void update(Vector2f position)
-	{
-		this->x1 = position.x;
-		this->y1 = position.y;
-
-		this->x2 = position.x + sizeX;
-		this->y2 = y1;
-
-		this->x3 = position.x;
-		this->y3 = position.y + sizeY;
-
-		this->x4 = x2;
-		this->y4 = y3;
-	}
 };
-
