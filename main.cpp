@@ -8,36 +8,36 @@
 using namespace  sf;
 using namespace  std;
 
-Font Print::font; //Объявление статистического поля для дальнейшей инициализации
+Font Print::font; //РћР±СЉСЏРІР»РµРЅРёРµ СЃС‚Р°С‚РёСЃС‚РёС‡РµСЃРєРѕРіРѕ РїРѕР»СЏ РґР»СЏ РґР°Р»СЊРЅРµР№С€РµР№ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё
 				  
-bool Border::restart = false; //Флаг была ли нажата кнопка рестарт в окне игры
+bool Border::restart = false; //Р¤Р»Р°Рі Р±С‹Р»Р° Р»Рё РЅР°Р¶Р°С‚Р° РєРЅРѕРїРєР° СЂРµСЃС‚Р°СЂС‚ РІ РѕРєРЅРµ РёРіСЂС‹
 
 int main()
 {
 	RenderWindow menu, record, game;
-	menu.create(VideoMode(600, 800), L"Арканоид", Style::Titlebar);
+	menu.create(VideoMode(600, 800), L"РђСЂРєР°РЅРѕРёРґ", Style::Titlebar);
 	//window.create(VideoMode(600, 800), "Arcanoid");
-	menu.setFramerateLimit(60); //Лимит частоты кадров
+	menu.setFramerateLimit(60); //Р›РёРјРёС‚ С‡Р°СЃС‚РѕС‚С‹ РєР°РґСЂРѕРІ
 	//menu.setMouseCursorVisible(false);
 	menu.setActive(true);
 
 
-	/*-------------Работа с курсором-------------*/
-	menu.setMouseCursorVisible(false); //Скрываем системный курсор
+	/*-------------Р Р°Р±РѕС‚Р° СЃ РєСѓСЂСЃРѕСЂРѕРј-------------*/
+	menu.setMouseCursorVisible(false); //РЎРєСЂС‹РІР°РµРј СЃРёСЃС‚РµРјРЅС‹Р№ РєСѓСЂСЃРѕСЂ
 	View fixed = menu.getView();
 
-	//Загрузка значка курсора
+	//Р—Р°РіСЂСѓР·РєР° Р·РЅР°С‡РєР° РєСѓСЂСЃРѕСЂР°
 	Texture moveTexture, selectTexture;
-	moveTexture.loadFromFile("Data/Move.png"); //Курсор при движение
-	selectTexture.loadFromFile("Data/Select.png"); //Курсор когда появляется возможность выбрать
+	moveTexture.loadFromFile("Data/Move.png"); //РљСѓСЂСЃРѕСЂ РїСЂРё РґРІРёР¶РµРЅРёРµ
+	selectTexture.loadFromFile("Data/Select.png"); //РљСѓСЂСЃРѕСЂ РєРѕРіРґР° РїРѕСЏРІР»СЏРµС‚СЃСЏ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РІС‹Р±СЂР°С‚СЊ
 	Sprite cursor(moveTexture);
 
-	//Установка шрифта по умолчанию
+	//РЈСЃС‚Р°РЅРѕРІРєР° С€СЂРёС„С‚Р° РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 	Print::setFont("Data/font.otf");
-	//Размеры (x,y), координаты (x,y), тип(true - основная, false - маленькая)
+	//Р Р°Р·РјРµСЂС‹ (x,y), РєРѕРѕСЂРґРёРЅР°С‚С‹ (x,y), С‚РёРї(true - РѕСЃРЅРѕРІРЅР°СЏ, false - РјР°Р»РµРЅСЊРєР°СЏ)
 	RectangleShape border;
 
-	int indexMenu = -1; //Индекс выделеной кнопки
+	int indexMenu = -1; //РРЅРґРµРєСЃ РІС‹РґРµР»РµРЅРѕР№ РєРЅРѕРїРєРё
 
 	Object button1(155, 30, 225, 215), button2(210, 30, 200, 285), button3(160, 30, 225, 355);
 
@@ -45,7 +45,7 @@ int main()
 	while (menu.isOpen())
 	{
 		
-		//Была ли нажата кнопка рестарт в окне Game
+		//Р‘С‹Р»Р° Р»Рё РЅР°Р¶Р°С‚Р° РєРЅРѕРїРєР° СЂРµСЃС‚Р°СЂС‚ РІ РѕРєРЅРµ Game
 		if (Border::restart == true)
 		{
 			Border::restart = false;
@@ -64,21 +64,21 @@ int main()
 			case Event::MouseButtonReleased:
 				if (event.mouseButton.button == sf::Mouse::Left)
 				{
-					//Нажата кнопка Играть
+					//РќР°Р¶Р°С‚Р° РєРЅРѕРїРєР° РРіСЂР°С‚СЊ
 					if (button1.catchButton(Mouse::getPosition(menu).x, Mouse::getPosition(menu).y))
 					{
 						menu.setVisible(false);
 						Game::Display(game, menu);
 					}
 
-					//Нажата кнопка Рекорды
+					//РќР°Р¶Р°С‚Р° РєРЅРѕРїРєР° Р РµРєРѕСЂРґС‹
 					if (button2.catchButton(Mouse::getPosition(menu).x, Mouse::getPosition(menu).y))
 					{
 						menu.setVisible(false);
 						Record::Render(record, menu);
 					}
 
-					//Нажата кнопка Выход
+					//РќР°Р¶Р°С‚Р° РєРЅРѕРїРєР° Р’С‹С…РѕРґ
 					if (button3.catchButton(Mouse::getPosition(menu).x, Mouse::getPosition(menu).y))
 					{
 						menu.close();
@@ -87,7 +87,7 @@ int main()
 				break;
 			case Event::KeyPressed:
 
-				//Нажата Enter (для управления клавишами и Enter)
+				//РќР°Р¶Р°С‚Р° Enter (РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ РєР»Р°РІРёС€Р°РјРё Рё Enter)
 				if (Keyboard::isKeyPressed(Keyboard::Return))
 				{
 					switch (indexMenu)
@@ -111,17 +111,17 @@ int main()
 			}
 		}
 
-		/*----------Отрисовка каждого кадра меню----------*/
-		cursor.setPosition(static_cast<Vector2f>(Mouse::getPosition(menu))); // Установка позиции курсора
+		/*----------РћС‚СЂРёСЃРѕРІРєР° РєР°Р¶РґРѕРіРѕ РєР°РґСЂР° РјРµРЅСЋ----------*/
+		cursor.setPosition(static_cast<Vector2f>(Mouse::getPosition(menu))); // РЈСЃС‚Р°РЅРѕРІРєР° РїРѕР·РёС†РёРё РєСѓСЂСЃРѕСЂР°
 
 		menu.clear(Color(15, 14, 14));
-		//Устанавливаем цвет внешнего контура прямоугольника на красный
+		//РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С†РІРµС‚ РІРЅРµС€РЅРµРіРѕ РєРѕРЅС‚СѓСЂР° РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР° РЅР° РєСЂР°СЃРЅС‹Р№
 		border.setOutlineColor(Color(198, 36, 36));
 
-		//Устанавливаем текстуру двигаюшего курсора
+		//РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С‚РµРєСЃС‚СѓСЂСѓ РґРІРёРіР°СЋС€РµРіРѕ РєСѓСЂСЃРѕСЂР°
 		cursor.setTexture(moveTexture);
 
-		//Обводка выбранного пункта меню
+		//РћР±РІРѕРґРєР° РІС‹Р±СЂР°РЅРЅРѕРіРѕ РїСѓРЅРєС‚Р° РјРµРЅСЋ
 		if (button1.catchButton(Mouse::getPosition(menu).x, Mouse::getPosition(menu).y))
 		{
 			cursor.setTexture(selectTexture);
@@ -148,7 +148,7 @@ int main()
 			border.setOutlineColor(Color(15, 14, 14));
 			break;
 		case 0:
-			//Размеры (x,y), координаты (x,y)
+			//Р Р°Р·РјРµСЂС‹ (x,y), РєРѕРѕСЂРґРёРЅР°С‚С‹ (x,y)
 			border = Border::printBorder(220, 60, 190, 200);
 			break;
 		case 1:
@@ -161,13 +161,13 @@ int main()
 
 		menu.setView(fixed);
 
-		menu.draw(border); //Рисуем рамку
-		menu.draw(Print::printText(L"АРКАНОИД", 98, 40, 50)); //Размер шрифта, координаты
-		menu.draw(Print::printText(L"Играть", 45, 225.0, 200));
-		menu.draw(Print::printText(L"Рекорды", 45, 200.0, 270));
-		menu.draw(Print::printText(L"Выход", 45, 225.0, 340));
+		menu.draw(border); //Р РёСЃСѓРµРј СЂР°РјРєСѓ
+		menu.draw(Print::printText(L"РђР РљРђРќРћРР”", 98, 40, 50)); //Р Р°Р·РјРµСЂ С€СЂРёС„С‚Р°, РєРѕРѕСЂРґРёРЅР°С‚С‹
+		menu.draw(Print::printText(L"РРіСЂР°С‚СЊ", 45, 225.0, 200));
+		menu.draw(Print::printText(L"Р РµРєРѕСЂРґС‹", 45, 200.0, 270));
+		menu.draw(Print::printText(L"Р’С‹С…РѕРґ", 45, 225.0, 340));
 
-		menu.draw(cursor); //Рисуем курсор
+		menu.draw(cursor); //Р РёСЃСѓРµРј РєСѓСЂСЃРѕСЂ
 
 		menu.display();
 	}
