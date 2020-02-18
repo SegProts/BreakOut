@@ -4,15 +4,15 @@
 using namespace  std;
 using namespace  sf;
 
-//Вспомогательный статистический класс для распечатки текста
+//Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ СЃС‚Р°С‚РёСЃС‚РёС‡РµСЃРєРёР№ РєР»Р°СЃСЃ РґР»СЏ СЂР°СЃРїРµС‡Р°С‚РєРё С‚РµРєСЃС‚Р°
 class Print
 {
 public:
-	//Смена шрифта по пути к файлу шрифта
+	//РЎРјРµРЅР° С€СЂРёС„С‚Р° РїРѕ РїСѓС‚Рё Рє С„Р°Р№Р»Сѓ С€СЂРёС„С‚Р°
 	static void setFont(string path) { font.loadFromFile(path); }
 
-	//Формируем текст для печати
-	static Text printText(string t, Color c = Color::White, int size = 14, Text::Style style = Text::Bold) //Текст, размер шрифта, стиль
+	//Р¤РѕСЂРјРёСЂСѓРµРј С‚РµРєСЃС‚ РґР»СЏ РїРµС‡Р°С‚Рё
+	static Text printText(string t, Color c = Color::White, int size = 14, Text::Style style = Text::Bold) //РўРµРєСЃС‚, СЂР°Р·РјРµСЂ С€СЂРёС„С‚Р°, СЃС‚РёР»СЊ
 	{
 		Text text(t, font, size);
 		text.setFillColor(c);
@@ -20,8 +20,8 @@ public:
 		return text;
 	}
 
-	//Формируем текст для печати
-	static Text printText(wstring t, int size) //Текст, размер шрифта, стиль
+	//Р¤РѕСЂРјРёСЂСѓРµРј С‚РµРєСЃС‚ РґР»СЏ РїРµС‡Р°С‚Рё
+	static Text printText(wstring t, int size) //РўРµРєСЃС‚, СЂР°Р·РјРµСЂ С€СЂРёС„С‚Р°, СЃС‚РёР»СЊ
 	{
 		Text text(t, font, size);
 		text.setFillColor(Color::Red);
@@ -29,12 +29,12 @@ public:
 		return text;
 	}
 
-	//Формируем текст для печати
-	static Text printText(wstring t, int size, float x, float y) //Текст, размер позиция
+	//Р¤РѕСЂРјРёСЂСѓРµРј С‚РµРєСЃС‚ РґР»СЏ РїРµС‡Р°С‚Рё
+	static Text printText(wstring t, int size, float x, float y) //РўРµРєСЃС‚, СЂР°Р·РјРµСЂ РїРѕР·РёС†РёСЏ
 	{
 		Text text(t, font, size);
-		text.setPosition(x, y); //Установка позиции текста
-		text.setFillColor(Color(198, 36, 36)); //Определения своего цвета текста
+		text.setPosition(x, y); //РЈСЃС‚Р°РЅРѕРІРєР° РїРѕР·РёС†РёРё С‚РµРєСЃС‚Р°
+		text.setFillColor(Color(198, 36, 36)); //РћРїСЂРµРґРµР»РµРЅРёСЏ СЃРІРѕРµРіРѕ С†РІРµС‚Р° С‚РµРєСЃС‚Р°
 		text.setStyle(Text::Bold);
 		return text;
 	}
