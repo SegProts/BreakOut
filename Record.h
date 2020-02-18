@@ -1,149 +1,86 @@
-#include <SFML/Graphics.hpp>
-#include <string>
-#include <fstream>
-#include "Object.h"
-
-using namespace  sf;
-using namespace  std;
-
-class Record
+class Object
 {
 public:
-	static void Render(RenderWindow &record, RenderWindow &menu)
+
+	//РљРѕРЅСЃС‚СЂСѓС‚РѕСЂ РґР»СЏ СЌР»РµРјРµРЅС‚РѕРІ РёРЅС‚РµСЂС„РµР№СЃР° Рё РёРіСЂРѕРІС‹С… СЌР»РµРјРµРЅС‚РѕРІ
+	Object(int sizeX, int sizeY, float x, float y) 
 	{
-		Print::setFont("Data/font.otf"); 
-		record.create(VideoMode(600, 800), "Arcanoid", Style::Titlebar);
-		record.setMouseCursorVisible(false);
-		record.setFramerateLimit(60); //Лимит частоты кадров
+		this->sizeX = sizeX;
+		this->sizeY = sizeY;
+		this->x = x;
+		this->y = y;
 
-		RectangleShape borderText = Border::printBorder(480, 570, 60, 105);
-		RectangleShape borderButton;
+		this->x1 = x;
+		this->y1 = y;
 
-		/*-------------Работа с курсором-------------*/
-		record.setMouseCursorVisible(false);
-		View fixed = record.getView();
+		this->x2 = x + sizeX;
+		this->y2 = y1;
 
-		//Загрузка значка курсора
-		Texture moveTexture, selectTexture;
-		moveTexture.loadFromFile("Data/Move.png"); //Курсор при движение
-		selectTexture.loadFromFile("Data/Select.png"); //Курсор когда появляется возможность выбрать
-		Sprite cursor(moveTexture);
-		
-		ifstream file;
-		file.open("Data/record.txt");
+		this->x3 = x;
+		this->y3 = y + sizeY;
 
-		string records[10];
-		Object button1(150, 30, 225, 715);
-		int indexMenu = -1;
-
-		if (file.is_open())
-		{
-			int i = 0;
-
-			while (!file.eof())
-			{
-				getline(file, records[i]);
-				if (i <9) { i++; }
-				else { break; }
-			}
-		}
-
-		file.close();
-
-		while (record.isOpen())
-		{
-			Event event;
-
-			while (record.pollEvent(event))
-			{
-				switch (event.type)
-				{
-				case Event::Closed:
-					menu.setVisible(true);
-					record.close();
-					break;
-				case Event::MouseButtonReleased:
-					if (event.mouseButton.button == sf::Mouse::Left)
-					{
-						if (button1.catchButton(Mouse::getPosition(record).x, Mouse::getPosition(record).y))
-						{
-							menu.setVisible(true);
-							record.close();
-						}
-					}
-					break;
-				case Event::KeyPressed:
-
-					//Нажата Enter
-					if (Keyboard::isKeyPressed(Keyboard::Return))
-					{
-						menu.setVisible(true);
-						record.close();
-					}
-					break;
-				}
-			}
-
-			cursor.setPosition(static_cast<Vector2f>(Mouse::getPosition(menu))); // Установка позиции курсора
-				//Устанавливаем цвет внешнего контура прямоугольника на красный
-			borderButton.setOutlineColor(Color(198, 36, 36));
-
-			//Устанавливаем текстуру двигаюшего курсора
-			cursor.setTexture(moveTexture);
-
-			//Обводка выбранного пункта меню
-			if (button1.catchButton(Mouse::getPosition(menu).x, Mouse::getPosition(menu).y))
-			{
-				cursor.setTexture(selectTexture);
-				indexMenu = 0;
-			}
-			else
-			{
-				indexMenu = -1;
-			}
-
-
-			switch (indexMenu)
-			{
-			case -1:
-				borderButton.setOutlineColor(Color(15, 14, 14));
-				break;
-			case 0:
-				//Размеры (x,y), координаты (x,y)
-				borderButton = Border::printBorder(220, 60, 190, 700);
-				break;
-			}
-
-			record.clear(Color(15, 14, 14));
-
-			record.draw(Print::printText(L"Таблица рекордов:", 45, 70.0, 30));
-
-			//Рисуем рамки
-			record.draw(borderText);
-			record.draw(borderButton);
-
-
-			record.draw(Print::printText(L"Назад", 45, 225.0, 700));
-
-			float y = 120.0;
-
-			std::locale locale;
-			sf::String s;
-
-			Print::setFont("Data/rec_font.otf");
-
-			for (int i = 0; i < 10; i++)
-			{
-				s = String(records[i], locale);
-				if (s != "0"){ record.draw(Print::printText(s, 30, 90, y)); }
-				y += 55;
-			}
-
-			Print::setFont("Data/font.otf");
-			record.draw(cursor);
-
-			record.display();
-		}
+		this->x4 = x + sizeX;
+		this->y4 = y3;
+		live = true;
 	}
 
+	//РљРѕРЅСЃС‚СЂСѓС‚РѕСЂ РґР»СЏ СЃРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚РѕРІ СЏС‰РёРєР° (color СЃРІРѕР№СЃС‚РІРѕ РїРѕ РєРѕС‚РѕСЂРѕРјСѓ РѕРїСЂРµРґРµР»СЏРµС‚СЃСЏ РЅР°С‡РёСЃР»РµРЅРёРµ РѕС‡РєРѕРІ)
+	Object(int sizeX, int sizeY, float x, float y, Color &color)
+	{
+		this->sizeX = sizeX;
+		this->sizeY = sizeY;
+		this->x = x;
+		this->y = y;
+
+		this->x1 = x;
+		this->y1 = y;
+
+		this->x2 = x + sizeX;
+		this->y2 = y1;
+
+		this->x3 = x;
+		this->y3 = y + sizeY;
+
+		this->x4 = x + sizeX;
+		this->y4 = y3;
+		live = true;
+		this->color = color;
+	}
+
+	//Р•С‰Рµ РѕРґРёРЅ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РґР»СЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё РїРѕР»СЏ live, РєРѕС‚РѕСЂС‹Р№ РЅСѓР¶РµРЅ РґР»СЏ РѕРїСЂРµРґРµР»РµРЅРёСЏ С†РµР»С‹С… СЏС‰РёРєРѕРІ
+	Object() { live = true; }
+
+	int sizeX, sizeY;
+	float x, y;
+	float x1, x2, x3, x4, y1, y2, y3, y4;
+	bool live;
+	Color color;
+
+	//РџРµСЂРµСЃРµС‡РµРЅРёРµ С‚РѕС‡РєРё СЃ РѕР±СЉРµРєС‚РѕРј (РґР»СЏ РєРЅРѕРїРѕРє)
+	bool catchButton(int x, int y)
+	{
+
+		if((x >= this->x1) && (x <= this->x2) && (y >= this->y1) && (y <= this->y3))
+		{
+			return true;
+		}
+		else { return false; }
+	}
+
+	//РћР±РЅРѕРІР»РµРЅРёРµ РєРѕРѕСЂРґРёРЅР°С‚ 4-С… С‚РѕС‡РµРє РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР° РїСЂРё РµРіРѕ РїРµСЂРµРјРµС‰РµРЅРёРё
+	void update(Vector2f position)
+	{
+		this->x1 = position.x;
+		this->y1 = position.y;
+
+		this->x2 = position.x + sizeX;
+		this->y2 = y1;
+
+		this->x3 = position.x;
+		this->y3 = position.y + sizeY;
+
+		this->x4 = x2;
+		this->y4 = y3;
+	}
 };
+
